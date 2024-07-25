@@ -130,7 +130,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;opencv_world4100d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,7 +154,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;opencv_world4100d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
