@@ -189,7 +189,7 @@ public:
 			return;
 		}
 		std::vector<std::string> file_paths_t;
-		for (int i = t0; i < t1; i++) {
+		for (int i = t0; i < std::min(t1, (int)file_paths.size()); i++) {
 			file_paths_t.push_back(file_paths[i]);
 		}
 

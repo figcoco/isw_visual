@@ -8,7 +8,6 @@
 #include <ncfile_manager.hpp>
 #include <cmath> 
 #include <matplot/matplot.h> 
-#include <matplot/backend/opengl.h>
 
 namespace fs = std::filesystem;
 using namespace matplot;

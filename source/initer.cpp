@@ -106,4 +106,19 @@ void Initer::init() {
     //show();// 需要调用show才能显示 return 0; 
     //为了实现在命令窗口（CMD）下画图，我们需要配置一下系统环境变量：自定义安装目录\gnuplot\bin
     
+    //////-----------------------easyx   test-------------------------------/////
+    //
+    //initgraph(640, 480);	// 创建绘图窗口，大小为 640x480 像素
+    //circle(200, 200, 100);	// 画圆，圆心(200, 200)，半径 100
+    //_getch();				// 按任意键继续
+    //closegraph();			// 关闭绘图窗口
+
+
+    //////-----------------------Visual_Image_Sequence---------------------/////
+    Aspose::Cells::Startup();
+
+    //Aspose::Cells::Workbook wkb(u"input.png");
+    //wkb.Save(u"Output.svg");
+
+    Aspose::Cells::Cleanup();
 }
