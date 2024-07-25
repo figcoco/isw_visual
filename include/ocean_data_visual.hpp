@@ -8,6 +8,7 @@
 #include <ncfile_manager.hpp>
 #include <cmath> 
 #include <matplot/matplot.h> 
+#include <matplot/backend/opengl.h>
 
 namespace fs = std::filesystem;
 using namespace matplot;
@@ -114,9 +115,9 @@ public:
 
     virtual void _draw(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
         //auto f = figure();
-        //auto f = figure<backend::opengl>(true);
-        //figure(f);
-        gcf(true);
+        auto f = figure<backend::opengl>(true);
+        figure(f);
+        //gcf(true);
         std::shared_ptr<axes_type> ax = gcf()->current_axes();
         //todo
         //fig, ax = plt.subplots(figsize = self._figsize)
@@ -237,9 +238,10 @@ public:
         auto interpolation = get_interpolation(_interpolation);
         //frame_i = imresize(frame_i, 1.0, interpolation);
         
-        gcf()->size(frame[0].size(), frame[0][0].size());
+        //gcf()->size(frame[0].size(), frame[0][0].size());
         //todo
         //imshow(ax, frame_i[0], frame_i[1], frame_i[2]);    //, _image_alpha, _aspect, extent, vmin, vmax);
+        //easyx_image();
         image(ax, frame_d[0], true);
         if (_image_alpha != 0) {
             return gcf();

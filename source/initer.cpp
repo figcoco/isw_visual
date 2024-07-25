@@ -114,11 +114,9 @@ void Initer::init() {
     //closegraph();			// 关闭绘图窗口
 
 
-    //////-----------------------Visual_Image_Sequence---------------------/////
-    Aspose::Cells::Startup();
-
+    //////-----------------------png2svg------------------------------------/////
+    //Aspose::Cells::Startup();
     //Aspose::Cells::Workbook wkb(u"input.png");
     //wkb.Save(u"Output.svg");
-
-    Aspose::Cells::Cleanup();
+    //Aspose::Cells::Cleanup();
 }

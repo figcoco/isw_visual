@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
         param.nop = 5;
         param.yx_aspect = 1.76;
         param.image_type;
-        param.data_folder = "data/ISWFM-NSCS-6day";
+        param.data_folder = "../data/ISWFM-NSCS-6day";
         param.image_folder = "./output/image_sequence_eta";
     }
     SingleThreadPool = new ThreadPool(param.nop);

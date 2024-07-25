@@ -28,14 +28,14 @@
     <Filter Include="3rd_party\numcpp">
       <UniqueIdentifier>{7d0b474a-1984-4ad4-8e93-c1ab50e4bd93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd_party\opencv">
-      <UniqueIdentifier>{34b1d976-bae6-4ea0-9dfb-da4c2e93f63e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3rd_party\spdlog">
       <UniqueIdentifier>{6ae7a080-a5d8-4f88-82f7-cc585351d59a}</UniqueIdentifier>
     </Filter>
     <Filter Include="3rd_party\opengl">
       <UniqueIdentifier>{224c5e10-e11b-488f-8364-c6fcf6376af9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\matplot++">
+      <UniqueIdentifier>{30517f1a-24e1-47f5-9b4c-4acfd7fef1e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="3rd_party\json\jsoncpp\dist\jsoncpp.cpp">
       <Filter>3rd_party\json</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\opengl\glad\glad.c">
+      <Filter>3rd_party\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
