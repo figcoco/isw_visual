@@ -184,6 +184,10 @@ public:
 	NcfileManager(std::string file_folder, std::string file_name_patern, std::string fea_name, int t0, int t1) {
 		std::vector<std::string> file_paths = _file_searcher.__call__(file_folder, file_name_patern);
 		sort(file_paths.begin(), file_paths.end());
+		if (file_paths.size() == 0) {
+			LOG_E("No file found! The path is {0}", file_folder);
+			return;
+		}
 		std::vector<std::string> file_paths_t;
 		for (int i = t0; i < t1; i++) {
 			file_paths_t.push_back(file_paths[i]);
