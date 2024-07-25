@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommandArguments>--data_folder=../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommandArguments>--data_folder=../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20</LocalDebuggerCommandArguments>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
+  </PropertyGroup>
+</Project>

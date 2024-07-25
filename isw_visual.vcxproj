@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{4db08130-6056-4db2-977d-9958333c70ff}</ProjectGuid>
+    <RootNamespace>iswvisual</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\include;$(SolutionDir)3rd_party\opengl;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\opencv\build\include\opencv2;$(SolutionDir)3rd_party\opencv\build\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\lib-vc2022;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)source;$(SourcePath)</SourcePath>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\include;$(SolutionDir)3rd_party\opengl;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\opencv\build\include\opencv2;$(SolutionDir)3rd_party\opencv\build\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\lib-vc2022;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)source;$(SourcePath)</SourcePath>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)3rd_party\json\jsoncpp\dist;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>--data_folder=../../../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20 %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <SupportJustMyCode>false</SupportJustMyCode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;opencv_world4100d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)3rd_party\json\jsoncpp\dist;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>--data_folder=../../../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20 %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;opencv_world4100d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="3rd_party\json\jsoncpp\dist\jsoncpp.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncAtt.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncByte.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncChar.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncCheck.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncCompoundType.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncDim.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncDouble.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncEnumType.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncException.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncFile.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncFloat.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncGroup.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncGroupAtt.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncInt.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncInt64.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncOpaqueType.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncShort.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncString.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncType.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUbyte.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUint.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUint64.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUshort.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVar.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVarAtt.cpp" />
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVlenType.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\initer.cpp" />
+    <ClCompile Include="source\ncfile_manager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\coord_generator.hpp" />
+    <ClInclude Include="include\initer.hpp" />
+    <ClInclude Include="include\ncfile_manager.hpp" />
+    <ClInclude Include="include\ocean_data.hpp" />
+    <ClInclude Include="include\ocean_data_visual.hpp" />
+    <ClInclude Include="include\ThreadPool.hpp" />
+    <ClInclude Include="include\visual_image_sequence.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

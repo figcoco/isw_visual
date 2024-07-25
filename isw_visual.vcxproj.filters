@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="3rd_party">
+      <UniqueIdentifier>{e2edb94e-3f6e-4245-877f-0d2c21d34954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\json">
+      <UniqueIdentifier>{d7cf3e9d-3e6e-4073-a7f6-81f07e465da3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\netcdf">
+      <UniqueIdentifier>{01f0a95e-3328-4919-bd0a-ae82305ba166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\boost">
+      <UniqueIdentifier>{9c73eafd-2af3-4413-9fe0-0da834262118}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\numcpp">
+      <UniqueIdentifier>{7d0b474a-1984-4ad4-8e93-c1ab50e4bd93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\opencv">
+      <UniqueIdentifier>{34b1d976-bae6-4ea0-9dfb-da4c2e93f63e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\spdlog">
+      <UniqueIdentifier>{6ae7a080-a5d8-4f88-82f7-cc585351d59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rd_party\opengl">
+      <UniqueIdentifier>{224c5e10-e11b-488f-8364-c6fcf6376af9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\initer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ncfile_manager.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncAtt.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncByte.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncChar.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncCheck.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncCompoundType.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncDim.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncDouble.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncEnumType.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncException.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncFile.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncFloat.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncGroup.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncGroupAtt.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncInt.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncInt64.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncOpaqueType.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncShort.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncString.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncType.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUbyte.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUint.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUint64.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncUshort.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVar.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVarAtt.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVlenType.cpp">
+      <Filter>3rd_party\netcdf</Filter>
+    </ClCompile>
+    <ClCompile Include="3rd_party\json\jsoncpp\dist\jsoncpp.cpp">
+      <Filter>3rd_party\json</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\coord_generator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\initer.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ncfile_manager.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ocean_data.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ocean_data_visual.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\visual_image_sequence.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ThreadPool.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
