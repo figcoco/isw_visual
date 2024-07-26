@@ -119,4 +119,52 @@ void Initer::init() {
     //Aspose::Cells::Workbook wkb(u"input.png");
     //wkb.Save(u"Output.svg");
     //Aspose::Cells::Cleanup();
+
+
+    //////-----------------------chartdir------------------------------------/////
+    // The x-axis and y-axis labels
+    //const char* xLabels[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+    //const int xLabels_size = (int)(sizeof(xLabels) / sizeof(*xLabels));
+    //const char* yLabels[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+    //const int yLabels_size = (int)(sizeof(yLabels) / sizeof(*yLabels));
+
+    //// Random data for the 10 x 10 cells
+    //RanSeries* r = new RanSeries(2);
+    //int x_size = xLabels_size * 200;
+    //int y_size = yLabels_size * 90;
+    //DoubleArray zData = r->get2DSeries(x_size, y_size, -0.01, 0.01);
+
+    //vector_1d datax = linspace(0, x_size, x_size);
+    //vector_1d datay = linspace(0, y_size, y_size);
+
+    //// Create an XYChart object of size 520 x 470 pixels.
+    //XYChart* c = new XYChart(1040, 940);
+
+    //// Set the plotarea at (50, 30) and of size 400 x 400 pixels.
+    //PlotArea* p = c->setPlotArea(75, 40, 800, 800, -1, -1, -1, c->dashLineColor(0x80000000, Chart::DotLine), -1);
+    ////PlotArea* p = c->setPlotArea(50, 30, 800, 800);
+
+    //// Create a discrete heat map with 10 x 10 cells
+    ////DiscreteHeatMapLayer* layer = c->addDiscreteHeatMapLayer(zData, x_size);
+    //// Add a contour layer using the given data
+    //ContourLayer* layer = c->addContourLayer(DoubleArray(&datax[0], x_size), DoubleArray(&datay[0],
+    //    y_size), zData);
+    //
+
+    //// Position the color axis 20 pixels to the right of the plot area and of the same height as the
+    //// plot area. Put the labels on the right side of the color axis. Use 8pt Arial Bold font for
+    //// the labels.
+    //ColorAxis* cAxis = layer->setColorAxis(p->getRightX() + 20, p->getTopY(), Chart::TopLeft,
+    //    p->getHeight(), Chart::Right);
+
+    //// Output the chart
+    //c->makeChart("discreteheatmap.svg");
+
+    ////free up resources
+    //delete r;
+    //delete c;
+
+    ////free up resources
+    //delete c;
+
 }

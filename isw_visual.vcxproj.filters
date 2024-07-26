@@ -155,5 +155,8 @@
     <ClInclude Include="include\ThreadPool.hpp">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\chartdir_plot.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

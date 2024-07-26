@@ -135,15 +135,38 @@ public:
         _y1 = y1;
     }
 
-    tri_matrix __call__(tri_matrix& data) {
-        tri_matrix res(data.size(), std::vector<std::vector<float>>(data[0].size(), std::vector<float>(data[0][0].size(), 0.0f)));
+    tri_matrix __call__(tri_matrix& data, int is_row = 0) {
+        tri_matrix res;
         //nc::flip(a, nc::Axis::ROW)
-        for (int channel = 0; channel < data.size(); channel++) {
-            for (int i = _y1 - 1; i >= _y1; i--) {
-                for (int j = _x0; j < _x1; j++) {
-                    res[channel][_y1 - i - 1][j] = data[channel][i][j];
+        if (is_row == 0) {
+            for (int channel = 0; channel < data.size(); channel++) {
+                std::vector<std::vector<float>> res_2d;
+                for (int i = _y1 - 1; i >= _y0; i--) {
+                    std::vector<float> res_1d;
+                    for (int j = _x0; j < _x1; j++) {
+                        res_1d.push_back(data[channel][i][j]);
+                    }
+                    res_2d.push_back(res_1d);
                 }
+                res.push_back(res_2d);
             }
+        }
+        //按列翻转
+        else if (is_row == 1) {
+            for (int channel = 0; channel < data.size(); channel++) {
+                std::vector<std::vector<float>> res_2d;
+                for (int i = _y0; i < _y1; i++) {
+                    std::vector<float> res_1d;
+                    for (int j = _x1 - 1; j >= _x0; j--) {
+                        res_1d.push_back(data[channel][i][j]);
+                    }
+                    res_2d.push_back(res_1d);
+                }
+                res.push_back(res_2d);
+            }
+        }
+        else {
+            return data;
         }
         return res;
     }
@@ -245,12 +268,14 @@ struct Color {
     float r;
     float g;
     float b;
+    int int_color;
 };
 
 struct LinearColorMap {
     std::string title;
     std::vector<Color> colors;
     std::vector<std::vector<double>> cmap;
+    std::vector<int> int_color_map;
 };
 
 class Colorbar {
@@ -267,12 +292,17 @@ public:
         std::string r(color.begin() + 1, color.begin() + 3);
         std::string g(color.begin() + 3, color.begin() + 5);
         std::string b(color.begin() + 5, color.end());
+        std::string int_color_s = "0x" + r + g + b;
         r = "0x" + r;
         g = "0x" + g;
         b = "0x" + b;
-        res.r = atoi(r.c_str());
-        res.g = atoi(g.c_str());
-        res.b = atoi(b.c_str());
+        int red = std::stoi(r, nullptr, 16);
+        res.r = red;
+        int green = std::stoi(g, nullptr, 16);
+        res.g = green;
+        int blue = std::stoi(b, nullptr, 16);
+        res.b = blue;
+        res.int_color = atoi(int_color_s.c_str());
         return res;
     }
 
@@ -297,9 +327,12 @@ public:
                 mid_v.push_back(mid_c.g);
                 mid_v.push_back(mid_c.b);
                 res.colors.push_back(mid_c);
-                res.cmap.push_back(mid_v);
+                res.cmap.push_back(mid_v); 
+                //
             }
+            res.int_color_map.push_back(before_c.int_color);
         }
+        res.int_color_map.push_back(string2Color(*(colors.end() - 1)).int_color);
         LOG_I("{0} create colormap size : {1}", __FUNCTION__, res.colors.size());
         return res;
     }
@@ -481,15 +514,16 @@ public:
 
     virtual void run(std::vector<int>& time_indexs) {
         for (auto& time_index : time_indexs) {
+            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
             NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
-            data.grid_data.begin()->second = _cropper.__call__(data.grid_data.begin()->second);
+            data.grid_data.begin()->second = _cropper.__call__(data.grid_data.begin()->second, 0);
             data.grid_data.begin()->second = _gradientor.__call__(data.grid_data.begin()->second);
             std::string time_index_s = std::to_string(time_index);
             while (time_index_s.size() < 2) {
                 time_index_s = "0" + time_index_s;
             }
             _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
         }
     }
 

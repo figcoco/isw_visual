@@ -8,7 +8,7 @@
 #include <ncfile_manager.hpp>
 #include <cmath> 
 #include <matplot/matplot.h> 
-#include <matplot/backend/opengl.h>
+#include <chartdir_plot.hpp>
 
 namespace fs = std::filesystem;
 using namespace matplot;
@@ -42,7 +42,7 @@ public:
 
 class DrawFun {
 public:
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin = 0.0f, float vmax = 0.0f) {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin = 0.0f, float vmax = 0.0f) {
         return nullptr;
     }
 };
@@ -102,7 +102,9 @@ public:
     PurseImageGenerator() = default;
     PurseImageGenerator(std::vector<int> figsize, std::shared_ptr<DrawFun> draw_fun, std::string image_format = "svg") 
         : ImageGenerator(figsize, draw_fun, 0, std::make_shared<NoneColorBar>(), image_format) {
-
+        //auto f = figure<backend::opengl>(true);
+        auto f = figure(true);
+        figure(f);
     }
     std::string replace(std::string str, const std::string& from, const std::string& to) {
         size_t start_pos = 0;
@@ -114,24 +116,22 @@ public:
     }
 
     virtual void _draw(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
-        //auto f = figure();
-        auto f = figure<backend::opengl>(true);
-        figure(f);
-        //gcf(true);
         std::shared_ptr<axes_type> ax = gcf()->current_axes();
         //todo
         //fig, ax = plt.subplots(figsize = self._figsize)
         //f->size(_figsize[0], _figsize[1]);
-        gcf()->font_size(_fontsize);
-        gcf()->title(title);
-        hold(off);
-        _axes_clearer.__call__(ax);
-        hold(on);
-        _draw_fun->__call__(data, ax, vmin, vmax);
+        //gcf()->font_size(_fontsize);
+        //gcf()->title(title);
+        //_axes_clearer.__call__(ax);
+        XYChart* image = _draw_fun->__call__(data, ax, vmin, vmax);
+
         image_name = image_name + "." + _image_format;
         auto ab_path = (fs::absolute(image_folder) / fs::path(image_name)).string();
         auto path = replace(ab_path, "\\", "/");
-        save(gcf(), path);
+
+        image->makeChart(path.c_str());
+        delete image;
+        //save(gcf(), path);
     }
 private:
     AxesClearer _axes_clearer;
@@ -196,7 +196,7 @@ public:
         _extent_generator = extent_generator;
     }
 
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
         return nullptr;
     }
 protected:
@@ -213,38 +213,49 @@ public:
             _interpolation = interpolation;
             _cmap = cmap;
     }
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
-        image_channels_t frame_i;
+
+        vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
+        vector_1d y = linspace(0, frame[0].size(), frame[0].size());
+
         tri_matrix_d frame_d;
         for (int i = 0; i < min(int(frame.size()), 3); i++) {
-            image_channel_t vec_2i;
             std::vector<std::vector<double>> vec_2d;
             for (auto& j : frame[i]) {
-                image_row_t vec_1i;
                 std::vector<double> vec_1d;
                 for (auto& k : j) {
-                    vec_1i.push_back(static_cast<unsigned char>(k));
                     vec_1d.push_back(static_cast<double>(k));
                 }
-                vec_2i.push_back(vec_1i);
                 vec_2d.push_back(vec_1d);
             }
-            frame_i.push_back(vec_2i);
             frame_d.push_back(vec_2d);
         }
-        
-        colormap(_cmap);
-        auto interpolation = get_interpolation(_interpolation);
-        //frame_i = imresize(frame_i, 1.0, interpolation);
-        
-        //gcf()->size(frame[0].size(), frame[0][0].size());
+
+
         //todo
-        //imshow(ax, frame_i[0], frame_i[1], frame_i[2]);    //, _image_alpha, _aspect, extent, vmin, vmax);
-        //easyx_image();
-        image(ax, frame_d[0], true);
+        //, _image_alpha, _aspect, extent, vmin, vmax);
+
+
+        float value_field = vmax - vmin;
+        std::vector<double> colormap;
+        for (int i = 0; i < _cmap.size(); i++) {
+            double value = vmin + i * value_field / _cmap.size();
+            int r = static_cast<double>(_cmap[i][0]);
+            int g = static_cast<double>(_cmap[i][1]);
+            int b = static_cast<double>(_cmap[i][2]);
+            std::stringstream stream;
+            stream << std::hex << r << g << b;
+            std::string result(stream.str());
+            int color = std::stoi(result, nullptr, 16);
+            colormap.push_back(value);
+            colormap.push_back(static_cast<double>(color));
+        }
+
+        XYChart* image = Rendering::paint_heat_map(x, y, frame_d, colormap);
+        //image(ax, frame_d[0], true);
         if (_image_alpha != 0) {
-            return gcf();
+            return image;
         }
         else return nullptr;
     }
@@ -267,7 +278,7 @@ public:
     NoneFrameAdder() 
         : FrameAdder(0.0, std::make_shared<NoneExtentGenerator>()){
     }
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         return nullptr;
     }
 };
@@ -291,15 +302,43 @@ public:
         _cmap = cmap;
     }
 
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         if (_image_alpha != 0) {
             auto extent = _extent_generator->__call__(frame);
             auto levels = _levels_generator.__call__(vmin, vmax);
             //todo
             //colormap(_cmap);
-            gcf()->size(frame[0].size(), frame[0][0].size());
+            //gcf()->size(frame[0].size(), frame[0][0].size());
             //contourf(ax, frame[0], frame[1], frame[2], levels);//extent, _image_alpha);
-            return gcf();
+            //return gcf();
+            vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
+            vector_1d y = linspace(0, frame[0].size(), frame[0].size());
+            tri_matrix_d frame_d;
+            for (int i = 0; i < min(int(frame.size()), 3); i++) {
+                std::vector<std::vector<double>> vec_2d;
+                for (auto& j : frame[i]) {
+                    std::vector<double> vec_1d;
+                    for (auto& k : j) {
+                        vec_1d.push_back(static_cast<double>(k));
+                    }
+                    vec_2d.push_back(vec_1d);
+                }
+                frame_d.push_back(vec_2d);
+            }
+
+            std::vector<int> colormap;
+            for (auto i : _cmap) {
+                int r = static_cast<double>(i[0]);
+                int g = static_cast<double>(i[1]);
+                int b = static_cast<double>(i[2]);
+                std::stringstream stream;
+                stream << std::hex << r << g << b;
+                std::string result(stream.str());
+                int color = std::stoi(result, nullptr, 16);
+                colormap.push_back(color);
+            }
+            XYChart* image = Rendering::paint_contour(x, y, frame_d, colormap);
+            return image;
         }
         else {
             return nullptr;
@@ -321,18 +360,30 @@ public:
         _color = color;
         _level_num = level_num;
     }
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
         auto levels = _levels_generator.__call__(vmin, vmax);
         //todo
-        gcf()->size(frame[0].size(), frame[0][0].size());
+        //gcf()->size(frame[0].size(), frame[0][0].size());
         vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
         vector_1d y = linspace(0, frame[0].size(), frame[0].size());
-        auto [X, Y] = meshgrid(x, y);
+        tri_matrix_d frame_d;
+        for (int i = 0; i < min(int(frame.size()), 3); i++) {
+            std::vector<std::vector<double>> vec_2d;
+            for (auto& j : frame[i]) {
+                std::vector<double> vec_1d;
+                for (auto& k : j) {
+                    vec_1d.push_back(static_cast<double>(k));
+                }
+                vec_2d.push_back(vec_1d);
+            }
+            frame_d.push_back(vec_2d);
+        }
+        //auto [X, Y] = meshgrid(x, y);
         //contour(ax, X, Y, frame[0], levels)->color("black");
         // extent, _image_alpha);
         if (_image_alpha != 0) {
-            return gcf();
+            return nullptr;
         }
         return nullptr;
     }
@@ -357,7 +408,7 @@ public:
         _contour_image_adder = contour_image_adder;
     }
 
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         auto heat_image = _heat_image_adder->__call__(frame, ax, vmin, vmax);
         auto contourf_image = _contourf_image_adder->__call__(frame, ax, vmin, vmax);
         auto contour_image = _contour_image_adder->__call__(frame, ax, vmin, vmax);
@@ -416,7 +467,7 @@ public:
         set_values(heat_image_adder, contourf_image_adder, contour_image_adder);
     }
 
-    virtual figure_handle __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
+    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
         auto heat_frame = frame;
         auto contour_frame = frame;
         auto heat_image = _heat_image_adder->__call__(heat_frame, ax, vmin, vmax);
