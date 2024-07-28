@@ -557,7 +557,7 @@ public:
             std::vector<std::string> colors = { "#0000FF", "#FFFFFF" };
             colors = { "#4b0095", "#0c7ff2", "#fefefe", "#fa8b04" };
             auto colorbar = Colorbar(colors, -0.01, 0.01);
-            colorbar.save(param.image_folder);
+            //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawHeatFrame>(param.yx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * (param.x1 - param.x0 - 2) / (param.y1 - param.y0 - 2), 20 };
             auto image_generator = std::make_shared <PurseImageGenerator>(figsize, draw_fun, param.image_type);
@@ -571,7 +571,7 @@ public:
             auto slash_interpolator = SlashInterpolator(param.x0, param.x1, param.y0, param.y1, param.z0, param.z1);
             std::vector<std::string> colors = { "#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f" };
             auto colorbar = Colorbar(colors, 0.0, 30.0);
-            colorbar.save(param.image_folder);
+            //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawCcFrame>(33, param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
@@ -586,8 +586,7 @@ public:
             auto slash_interpolator = SlashInterpolator(param.x0, param.x1, param.y0, param.y1, param.z0, param.z1);
             std::vector<std::string> colors = { "#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061" };
             auto colorbar = Colorbar(colors, -1.0, 1.0);
-            colorbar.save(param.image_folder);
-            //todo
+            //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawDoubleHcFrame>(33, param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
@@ -600,7 +599,7 @@ public:
             auto slash_interpolator = SlashInterpolator(param.x0, param.x1, param.y0, param.y1, param.z0, param.z1);
             std::vector<std::string> colors = { "#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061" };
             auto colorbar = Colorbar(colors, -1.0, 1.0);
-            colorbar.save(param.image_folder);
+            //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = {20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20};
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
@@ -613,7 +612,7 @@ public:
             auto slash_interpolator = SlashInterpolator(param.x0, param.x1, param.y0, param.y1, param.z0, param.z1);
             std::vector<std::string> colors = {"#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061"};
             auto colorbar = Colorbar(colors, -1.0, 1.0);
-            colorbar.save(param.image_folder);
+            //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
