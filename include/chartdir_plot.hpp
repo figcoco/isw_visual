@@ -48,10 +48,10 @@ public:
         int width = dataX.size();
         int height = dataY.size();
         int dataZ_size = width * height;
-        double* dataZ_d = new double[1 * width * height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                dataZ_d[i + j * height] = data[0][i][j];
+        double* dataZ_d = new double[width * height];
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                dataZ_d[i + j * width] = data[0][i][j];
             }
         }
         DoubleArray zData(dataZ_d, dataZ_size);
@@ -73,11 +73,9 @@ public:
 
         DoubleArray colorArray(&cmap[0], cmap.size());
         cAxis->setColorScale(colorArray);
-        // Output the chart
-        //c->makeChart(file_path.c_str());
+
         return c;
-        //free up resources
-        //delete c;
+
     }
 };
 

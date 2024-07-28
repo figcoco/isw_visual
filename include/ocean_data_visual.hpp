@@ -78,7 +78,7 @@ struct LinearColorMap {
 
 class DrawFun {
 public:
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin = 0.0f, float vmax = 0.0f) {
+    virtual XYChart* __call__(tri_matrix frame, float vmin = 0.0f, float vmax = 0.0f) {
         return nullptr;
     }
 };
@@ -152,14 +152,7 @@ public:
     }
 
     virtual void _draw(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
-        std::shared_ptr<axes_type> ax = gcf()->current_axes();
-        //todo
-        //fig, ax = plt.subplots(figsize = self._figsize)
-        //f->size(_figsize[0], _figsize[1]);
-        //gcf()->font_size(_fontsize);
-        //gcf()->title(title);
-        //_axes_clearer.__call__(ax);
-        XYChart* image = _draw_fun->__call__(data, ax, vmin, vmax);
+        XYChart* image = _draw_fun->__call__(data, vmin, vmax);
 
         image_name = image_name + "." + _image_format;
         auto ab_path = (fs::absolute(image_folder) / fs::path(image_name)).string();
@@ -167,7 +160,6 @@ public:
 
         image->makeChart(path.c_str());
         delete image;
-        //save(gcf(), path);
     }
 private:
     AxesClearer _axes_clearer;
@@ -232,7 +224,7 @@ public:
         _extent_generator = extent_generator;
     }
 
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) {
         return nullptr;
     }
 protected:
@@ -249,7 +241,7 @@ public:
             _interpolation = interpolation;
             _cmap = cmap;
     }
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
 
         std::vector<double> x = linspace(0, frame[0].size(), frame[0].size());
@@ -312,7 +304,7 @@ public:
     NoneFrameAdder() 
         : FrameAdder(0.0, std::make_shared<NoneExtentGenerator>()){
     }
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
         return nullptr;
     }
 };
@@ -336,17 +328,14 @@ public:
         _cmap = cmap;
     }
 
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
         if (_image_alpha != 0) {
             auto extent = _extent_generator->__call__(frame);
             auto levels = _levels_generator.__call__(vmin, vmax);
             //todo
-            //colormap(_cmap);
-            //gcf()->size(frame[0].size(), frame[0][0].size());
-            //contourf(ax, frame[0], frame[1], frame[2], levels);//extent, _image_alpha);
-            //return gcf();
-            vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
-            vector_1d y = linspace(0, frame[0].size(), frame[0].size());
+            //extent, _image_alpha);
+            std::vector<double> x = linspace(0, frame[0].size(), frame[0].size());
+            std::vector<double> y = linspace(0, frame[0][0].size(), frame[0][0].size());
             tri_matrix_d frame_d;
             for (int i = 0; i < min(int(frame.size()), 3); i++) {
                 std::vector<std::vector<double>> vec_2d;
@@ -396,7 +385,7 @@ public:
         _color = color;
         _level_num = level_num;
     }
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
         auto levels = _levels_generator.__call__(vmin, vmax);
         //todo
@@ -444,10 +433,10 @@ public:
         _contour_image_adder = contour_image_adder;
     }
 
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
-        auto heat_image = _heat_image_adder->__call__(frame, ax, vmin, vmax);
-        auto contourf_image = _contourf_image_adder->__call__(frame, ax, vmin, vmax);
-        auto contour_image = _contour_image_adder->__call__(frame, ax, vmin, vmax);
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
+        auto heat_image = _heat_image_adder->__call__(frame, vmin, vmax);
+        auto contourf_image = _contourf_image_adder->__call__(frame, vmin, vmax);
+        auto contour_image = _contour_image_adder->__call__(frame, vmin, vmax);
         //todo
         auto image = heat_image;
         //auto image = heat_image or contourf_image;
@@ -503,11 +492,11 @@ public:
         set_values(heat_image_adder, contourf_image_adder, contour_image_adder);
     }
 
-    virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) {
+    virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) {
         auto heat_frame = frame;
         auto contour_frame = frame;
-        auto heat_image = _heat_image_adder->__call__(heat_frame, ax, vmin, vmax);
-        auto contourf_image = _contourf_image_adder->__call__(contour_frame, ax, vmin, vmax);
+        auto heat_image = _heat_image_adder->__call__(heat_frame, vmin, vmax);
+        auto contourf_image = _contourf_image_adder->__call__(contour_frame, vmin, vmax);
         //todo
         //_contour_image_adder->__call__(contour_frame, ax, min(contour_frame), max(contour_frame));
         //todo
