@@ -40,6 +40,42 @@ public:
     }
 };
 
+struct Color {
+    float r;
+    float g;
+    float b;
+    int int_color;
+};
+
+struct LinearColorMap {
+    std::string title;
+    std::vector<Color> colors;
+    std::vector<std::vector<double>> cmap;
+    std::vector<int> int_color_map;
+
+    //LinearColorMap() {
+    //    title = "";
+    //    colors = {};
+    //    cmap = {};
+    //    int_color_map = {};
+    //}
+
+    //LinearColorMap operator=(LinearColorMap& a) {
+    //    title = a.title;
+    //    colors = a.colors;
+    //    cmap = a.cmap;
+    //    int_color_map = a.int_color_map;
+    //}
+
+    //LinearColorMap(std::string title, std::vector<Color> colors, std::vector<std::vector<double>> cmap, std::vector<int> int_color_map) {
+    //    this->title = title;
+    //    this->colors = colors;
+    //    this->cmap = cmap;
+    //    this->int_color_map = int_color_map;
+    //}
+};
+
+
 class DrawFun {
 public:
     virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin = 0.0f, float vmax = 0.0f) {
@@ -207,7 +243,7 @@ protected:
 class HeatFrameAdder : public FrameAdder {
 public:
     HeatFrameAdder() = default;
-    HeatFrameAdder(float image_alpha, float aspect, std::vector<std::vector<double>> cmap, std::string interpolation)
+    HeatFrameAdder(float image_alpha, float aspect, std::shared_ptr<LinearColorMap> cmap = nullptr, std::string interpolation = "")
         : FrameAdder(image_alpha, std::make_shared<HeatExtentGenerator>()) {
             _aspect = aspect;
             _interpolation = interpolation;
@@ -216,8 +252,8 @@ public:
     virtual XYChart* __call__(tri_matrix frame, std::shared_ptr<axes_type> ax, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
 
-        vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
-        vector_1d y = linspace(0, frame[0].size(), frame[0].size());
+        std::vector<double> x = linspace(0, frame[0].size(), frame[0].size());
+        std::vector<double> y = linspace(0, frame[0][0].size(), frame[0][0].size());
 
         tri_matrix_d frame_d;
         for (int i = 0; i < min(int(frame.size()), 3); i++) {
@@ -239,17 +275,15 @@ public:
 
         float value_field = vmax - vmin;
         std::vector<double> colormap;
-        for (int i = 0; i < _cmap.size(); i++) {
-            double value = vmin + i * value_field / _cmap.size();
-            int r = static_cast<double>(_cmap[i][0]);
-            int g = static_cast<double>(_cmap[i][1]);
-            int b = static_cast<double>(_cmap[i][2]);
-            std::stringstream stream;
-            stream << std::hex << r << g << b;
-            std::string result(stream.str());
-            int color = std::stoi(result, nullptr, 16);
-            colormap.push_back(value);
-            colormap.push_back(static_cast<double>(color));
+        if (_cmap != nullptr) {
+            for (int i = 0; i < _cmap->colors.size() - 1; i++) {
+                double value = vmin + (i * value_field) / (_cmap->colors.size() - 1);
+                double color_d = static_cast<double>(_cmap->colors[i].int_color);
+                colormap.push_back(value);
+                colormap.push_back(color_d);
+            }
+            colormap.push_back(vmax);
+            colormap.push_back(static_cast<double>((_cmap->colors.end() - 1)->int_color));
         }
 
         XYChart* image = Rendering::paint_heat_map(x, y, frame_d, colormap);
@@ -259,7 +293,7 @@ public:
         }
         else return nullptr;
     }
-
+    
     image_interpolation get_interpolation(std::string key) {
         auto iter = interpolation_map.find(key);
         if (iter != interpolation_map.end()) {
@@ -269,7 +303,7 @@ public:
     }
 protected:
     float _aspect;
-    std::vector<std::vector<double>> _cmap;
+    std::shared_ptr<LinearColorMap> _cmap;
     std::string _interpolation;
 };
 
@@ -287,7 +321,7 @@ class NoneHeatFrameAdder : public HeatFrameAdder {
 public:
     NoneHeatFrameAdder() = default;
     NoneHeatFrameAdder(float aspect) 
-        : HeatFrameAdder(0.0f, 0.0f, {}, "") {
+        : HeatFrameAdder(0.0f, 0.0f) {
         _aspect = aspect;
         _interpolation = "";
     }
@@ -296,7 +330,7 @@ public:
 class ContourfFrameAdder : public FrameAdder {
 public:
     ContourfFrameAdder() = default;
-    ContourfFrameAdder(float image_alpha, int level_num, std::vector<std::vector<double>> cmap)
+    ContourfFrameAdder(float image_alpha, int level_num, std::shared_ptr<LinearColorMap> cmap)
         : FrameAdder(image_alpha, std::make_shared<ContourExtentGenerator>()) {
         _levels_generator = ContourLevelsGenerator(level_num);
         _cmap = cmap;
@@ -326,17 +360,19 @@ public:
                 frame_d.push_back(vec_2d);
             }
 
-            std::vector<int> colormap;
-            for (auto i : _cmap) {
-                int r = static_cast<double>(i[0]);
-                int g = static_cast<double>(i[1]);
-                int b = static_cast<double>(i[2]);
-                std::stringstream stream;
-                stream << std::hex << r << g << b;
-                std::string result(stream.str());
-                int color = std::stoi(result, nullptr, 16);
-                colormap.push_back(color);
+            float value_field = vmax - vmin;
+            std::vector<double> colormap;
+            if (_cmap != nullptr) {
+                for (int i = 0; i < _cmap->colors.size() - 1; i++) {
+                    double value = vmin + (i * value_field) / (_cmap->colors.size() - 1);
+                    double color_d = static_cast<double>(_cmap->colors[i].int_color);
+                    colormap.push_back(value);
+                    colormap.push_back(color_d);
+                }
+                colormap.push_back(vmax);
+                colormap.push_back(static_cast<double>((_cmap->colors.end() - 1)->int_color));
             }
+
             XYChart* image = Rendering::paint_contour(x, y, frame_d, colormap);
             return image;
         }
@@ -347,7 +383,7 @@ public:
 
 private:
     ContourLevelsGenerator _levels_generator;
-    std::vector<std::vector<double>> _cmap;
+    std::shared_ptr<LinearColorMap> _cmap;
 };
 
 
@@ -428,7 +464,7 @@ protected:
 
 class DrawHcFrame : public DrawHccFrameTemplate {
 public:
-    DrawHcFrame(int level_num, float aspect = 1, std::vector<std::vector<double>> cmap = {}, std::string heat_interpolation = "", std::string contour_color = "black") {
+    DrawHcFrame(int level_num, float aspect = 1, std::shared_ptr<LinearColorMap> cmap = nullptr, std::string heat_interpolation = "", std::string contour_color = "black") {
         auto heat_image_adder = std::make_shared <HeatFrameAdder>(1.0, aspect, cmap, heat_interpolation);
         auto contourf_image_adder = std::make_shared<NoneFrameAdder>();
         auto contour_image_adder = std::make_shared <ContourFrameAdder>(1.0, contour_color, level_num);
@@ -438,7 +474,7 @@ public:
 
 class DrawHeatFrame : public DrawHccFrameTemplate {
 public:
-    DrawHeatFrame(float aspect = 1, std::vector<std::vector<double>> cmap = {}, std::string heat_interpolation = "") {
+    DrawHeatFrame(float aspect = 1, std::shared_ptr<LinearColorMap> cmap = nullptr, std::string heat_interpolation = "") {
         auto heat_image_adder = std::make_shared <HeatFrameAdder>(1.0, aspect, cmap, heat_interpolation);
         auto contourf_image_adder = std::make_shared<NoneFrameAdder>();
         auto contour_image_adder = std::make_shared<NoneFrameAdder>();
@@ -449,7 +485,7 @@ public:
 class DrawCcFrame : public DrawHccFrameTemplate {
     //CC: contourf and contour
 public:
-    DrawCcFrame(int level_num, float aspect = 1, std::vector<std::vector<double>> cmap = {}, std::string contour_color = "black") {
+    DrawCcFrame(int level_num, float aspect = 1, std::shared_ptr<LinearColorMap> cmap = nullptr, std::string contour_color = "black") {
         auto heat_image_adder = std::make_shared <NoneHeatFrameAdder>(aspect);
         auto contourf_image_adder = std::make_shared<ContourfFrameAdder>(1.0, level_num, cmap);
         auto contour_image_adder = std::make_shared<ContourFrameAdder>(1.0, contour_color, level_num);
@@ -460,7 +496,7 @@ public:
 class DrawDoubleHcFrame : public DrawHccFrameTemplate {
     //    # HC: heat and contour
 public:
-    DrawDoubleHcFrame(int level_num, float aspect = 1, std::vector<std::vector<double>> cmap = {}, std::string heat_interpolation = "", std::string contour_color = "black") {
+    DrawDoubleHcFrame(int level_num, float aspect = 1, std::shared_ptr<LinearColorMap> cmap = nullptr, std::string heat_interpolation = "", std::string contour_color = "black") {
         auto heat_image_adder = std::make_shared <HeatFrameAdder>(1.0, aspect, cmap, heat_interpolation);
         auto contourf_image_adder = std::make_shared<NoneFrameAdder>();
         auto contour_image_adder = std::make_shared<ContourFrameAdder>(1.0, contour_color, level_num);

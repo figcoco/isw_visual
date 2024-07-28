@@ -67,7 +67,7 @@ public:
 	}
 
 	float getVar(int i, int j, int k) {
-		return _data[i * _sizes[0] + j * _sizes[1] + k];
+		return _data[i * _sizes[1] * _sizes[2] + j * _sizes[2] + k];
 	}
 
 	float* data() {

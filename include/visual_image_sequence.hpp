@@ -264,19 +264,6 @@ private:
     float _transform_value;
 };
 
-struct Color {
-    float r;
-    float g;
-    float b;
-    int int_color;
-};
-
-struct LinearColorMap {
-    std::string title;
-    std::vector<Color> colors;
-    std::vector<std::vector<double>> cmap;
-    std::vector<int> int_color_map;
-};
 
 class Colorbar {
 public:
@@ -302,43 +289,27 @@ public:
         res.g = green;
         int blue = std::stoi(b, nullptr, 16);
         res.b = blue;
-        res.int_color = atoi(int_color_s.c_str());
+        res.int_color = std::stoi(int_color_s, nullptr, 16);
         return res;
     }
 
     LinearColorMap linearSegmentedColormap(std::string title, std::vector<std::string>& colors, int sum) {
         LinearColorMap res;
         res.title = title;
-        int segment = colors.size() - 1;                        //10        3
-        int seg_size = sum / segment - 1;                           //90        96
-        for (int i = 0; i < colors.size() - 1; i++) {           //
+        for (int i = 0; i < colors.size(); i++) {           //
             //"#fddbc7"
-            std::string before = colors[i];
-            Color before_c = string2Color(before);
-            std::string after = colors[i + 1];
-            Color after_c = string2Color(after);
-            for (int j = 0; j <= seg_size; j++) {
-                Color mid_c;
-                std::vector<double> mid_v;
-                mid_c.r = (after_c.r - before_c.r) / seg_size + before_c.r;
-                mid_c.g = (after_c.g - before_c.g) / seg_size + before_c.g;
-                mid_c.b = (after_c.b - before_c.b) / seg_size + before_c.b;
-                mid_v.push_back(mid_c.r);
-                mid_v.push_back(mid_c.g);
-                mid_v.push_back(mid_c.b);
-                res.colors.push_back(mid_c);
-                res.cmap.push_back(mid_v); 
-                //
-            }
-            res.int_color_map.push_back(before_c.int_color);
+            std::string color_s = colors[i];
+            Color color = string2Color(color_s);
+            res.colors.push_back(color);
+            res.cmap.push_back({static_cast<double>(color.r), static_cast<double>(color.g), static_cast<double>(color.b)});
+            res.int_color_map.push_back(color.int_color);
         }
-        res.int_color_map.push_back(string2Color(*(colors.end() - 1)).int_color);
-        LOG_I("{0} create colormap size : {1}", __FUNCTION__, res.colors.size());
+        LOG_I("{0} : colormap size : {1}", __FUNCTION__, res.colors.size());
         return res;
     }
 
-    LinearColorMap get_camp() {
-        return linearSegmentedColormap("cmap", _colors, 100);
+    std::shared_ptr<LinearColorMap> get_cmap() {
+        return std::make_shared<LinearColorMap>(linearSegmentedColormap("cmap", _colors, _colors.size() + 1));
     }
 
     void save(std::string folder) {
@@ -587,7 +558,7 @@ public:
             colors = { "#4b0095", "#0c7ff2", "#fefefe", "#fa8b04" };
             auto colorbar = Colorbar(colors, -0.01, 0.01);
             colorbar.save(param.image_folder);
-            auto draw_fun = std::make_shared<DrawHeatFrame>(param.yx_aspect, colorbar.get_camp().cmap);
+            auto draw_fun = std::make_shared<DrawHeatFrame>(param.yx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * (param.x1 - param.x0 - 2) / (param.y1 - param.y0 - 2), 20 };
             auto image_generator = std::make_shared <PurseImageGenerator>(figsize, draw_fun, param.image_type);
             auto image_recorder = ImageRecorder(image_generator, colorbar, param.image_folder);
@@ -601,7 +572,7 @@ public:
             std::vector<std::string> colors = { "#053061", "#2166ac", "#4393c3", "#92c5de", "#d1e5f0", "#f7f7f7", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f" };
             auto colorbar = Colorbar(colors, 0.0, 30.0);
             colorbar.save(param.image_folder);
-            auto draw_fun = std::make_shared<DrawCcFrame>(33, param.zx_aspect, colorbar.get_camp().cmap);
+            auto draw_fun = std::make_shared<DrawCcFrame>(33, param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
             auto image_recorder = ImageRecorder(image_generator, colorbar, param.image_folder);
@@ -617,7 +588,7 @@ public:
             auto colorbar = Colorbar(colors, -1.0, 1.0);
             colorbar.save(param.image_folder);
             //todo
-            auto draw_fun = std::make_shared<DrawDoubleHcFrame>(33, param.zx_aspect, colorbar.get_camp().cmap);
+            auto draw_fun = std::make_shared<DrawDoubleHcFrame>(33, param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
             auto image_recorder = ImageRecorder(image_generator, colorbar, param.image_folder);
@@ -630,7 +601,7 @@ public:
             std::vector<std::string> colors = { "#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061" };
             auto colorbar = Colorbar(colors, -1.0, 1.0);
             colorbar.save(param.image_folder);
-            auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_camp().cmap);
+            auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = {20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20};
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
             auto image_recorder = ImageRecorder(image_generator, colorbar, param.image_folder);
@@ -643,7 +614,7 @@ public:
             std::vector<std::string> colors = {"#67001f", "#b2182b", "#d6604d", "#f4a582", "#fddbc7", "#f7f7f7", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061"};
             auto colorbar = Colorbar(colors, -1.0, 1.0);
             colorbar.save(param.image_folder);
-            auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_camp().cmap);
+            auto draw_fun = std::make_shared<DrawHeatFrame>(param.zx_aspect, colorbar.get_cmap());
             std::vector<int> figsize = { 20 * slash_interpolator._xy_dist / (param.z1 - param.z0), 20 };
             auto image_generator = std::make_shared<PurseImageGenerator>(figsize, draw_fun, param.image_type);
             auto image_recorder = ImageRecorder(image_generator, colorbar, param.image_folder);
