@@ -1,0 +1,11 @@
+﻿################################################################################
+# 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
+################################################################################
+
+/checkjson.json
+/.vs/isw_visual
+/isw_visual/x64/Debug
+/output/image_sequence_eta
+/x64/Debug
+/checkjson.json
+/checkjson.json
