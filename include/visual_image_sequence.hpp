@@ -304,7 +304,7 @@ public:
             res.cmap.push_back({static_cast<double>(color.r), static_cast<double>(color.g), static_cast<double>(color.b)});
             res.int_color_map.push_back(color.int_color);
         }
-        LOG_I("{0} : colormap size : {1}", __FUNCTION__, res.colors.size());
+        //LOG_I("{0} : colormap size : {1}", __FUNCTION__, res.colors.size());
         return res;
     }
 
@@ -554,8 +554,7 @@ public:
             auto ncfile_manager = NcfileManager(param.data_folder, "stateEta.*.glob.nc", "Eta", param.t0, param.t1 + 1);
             auto cropper = Cropper(param.x0, param.x1, param.y0, param.y1);
             auto gradientor = Gradientor();
-            std::vector<std::string> colors = { "#0000FF", "#FFFFFF" };
-            colors = { "#4b0095", "#0c7ff2", "#fefefe", "#fa8b04" };
+            std::vector<std::string> colors = { "#4b0095", "#0c7ff2", "#fefefe", "#fa8b04" };
             auto colorbar = Colorbar(colors, -0.01, 0.01);
             //colorbar.save(param.image_folder);
             auto draw_fun = std::make_shared<DrawHeatFrame>(param.yx_aspect, colorbar.get_cmap());

@@ -53,26 +53,6 @@ struct LinearColorMap {
     std::vector<std::vector<double>> cmap;
     std::vector<int> int_color_map;
 
-    //LinearColorMap() {
-    //    title = "";
-    //    colors = {};
-    //    cmap = {};
-    //    int_color_map = {};
-    //}
-
-    //LinearColorMap operator=(LinearColorMap& a) {
-    //    title = a.title;
-    //    colors = a.colors;
-    //    cmap = a.cmap;
-    //    int_color_map = a.int_color_map;
-    //}
-
-    //LinearColorMap(std::string title, std::vector<Color> colors, std::vector<std::vector<double>> cmap, std::vector<int> int_color_map) {
-    //    this->title = title;
-    //    this->colors = colors;
-    //    this->cmap = cmap;
-    //    this->int_color_map = int_color_map;
-    //}
 };
 
 

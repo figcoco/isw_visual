@@ -71,14 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)3rd_party\ChartDirector\include;$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\include;$(SolutionDir)3rd_party\opengl;$(SolutionDir)3rd_party\Matplot++ 1.2.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\opencv\build\include\opencv2;$(SolutionDir)3rd_party\opencv\build\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)3rd_party\ChartDirector\lib64;$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\lib-vc2022;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib\Matplot++;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)3rd_party\ChartDirector\include;$(SolutionDir)3rd_party\Matplot++ 1.2.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd_party\ChartDirector\lib64;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib\Matplot++;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)source;$(SourcePath)</SourcePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)3rd_party\ChartDirector\include;$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\include;$(SolutionDir)3rd_party\opengl;$(SolutionDir)3rd_party\Matplot++ 1.2.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\opencv\build\include\opencv2;$(SolutionDir)3rd_party\opencv\build\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)3rd_party\ChartDirector\lib64;$(SolutionDir)3rd_party\opengl\glfw-3.4.bin.WIN64\glfw-3.4.bin.WIN64\lib-vc2022;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib\Matplot++;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)3rd_party\ChartDirector\include;$(SolutionDir)3rd_party\Matplot++ 1.2.0\include;$(SolutionDir)3rd_party\boost_1_85_0;$(SolutionDir)3rd_party\NumCpp\include;$(SolutionDir)3rd_party\spdlog-1.x\include;$(SolutionDir)3rd_party\netCDF 4.9.2\include;$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)3rd_party\ChartDirector\lib64;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib;$(SolutionDir)3rd_party\Matplot++ 1.2.0\lib\Matplot++;$(SolutionDir)3rd_party\boost_1_85_0\stage\lib;$(SolutionDir)3rd_party\netCDF 4.9.2\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SolutionDir)3rd_party\netcdf-cxx4-4.3.1\cxx4;$(SolutionDir)source;$(SourcePath)</SourcePath>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -130,7 +130,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>chartdir70.lib;matplot_opengl.lib;opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>chartdir70.lib;matplot_opengl.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,7 +154,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib\Matplot++;$(SolutionDir)3rd_party\matplotplusplus 1.1.0\lib;$(SolutionDir)3rd_party\opencv\build\x64\vc16\bin;$(SolutionDir)3rd_party\netCDF 4.9.2\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>chartdir70.lib;matplot_opengl.lib;opengl32.lib;glfw3.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>chartdir70.lib;matplot_opengl.lib;nodesoup.lib;matplot.lib;netcdf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -185,7 +185,6 @@
     <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVar.cpp" />
     <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVarAtt.cpp" />
     <ClCompile Include="3rd_party\netcdf-cxx4-4.3.1\cxx4\ncVlenType.cpp" />
-    <ClCompile Include="3rd_party\opengl\glad\glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\initer.cpp" />
     <ClCompile Include="source\ncfile_manager.cpp" />
