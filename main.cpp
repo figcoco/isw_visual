@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     auto param = param_reciver.__call__(argc, argv);
     {
         param.is_success = true;
-        param.fea_name = "eta";
+        param.fea_name = "temp";
         param.t0 = 0;
         param.t1 = 23;
         param.y0 = 60;
@@ -17,10 +17,11 @@ int main(int argc, char* argv[]) {
         param.x0 = 300;
         param.x1 = 1500;
         param.nop = 5;
+        param.zx_aspect = 2.0;
         param.yx_aspect = 1.76;
         param.image_type;
         param.data_folder = "../data/ISWFM-NSCS-6day";
-        param.image_folder = "./output/image_sequence_eta";
+        param.image_folder = "./output/image_sequence_temp";
     }
     SingleThreadPool = new ThreadPool(param.nop);
 
@@ -40,6 +41,8 @@ int main(int argc, char* argv[]) {
 
 //isw_visual.exe --data_folder=../../../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp 
 //--t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20
+
+
 
 //.\bin\vis --data_folder=data\ISWFM-NSCS-6day --fea_name=eta --nop=5 --image_folder=output\image_sequence_eta 
 //--t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --yx_aspect=1.76

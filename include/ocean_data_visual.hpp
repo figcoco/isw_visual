@@ -88,12 +88,7 @@ public:
     virtual void __call__(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
 
         CreateFolder(image_folder);
-        //todo
-        //  plt.rcParams.update({"font.size": self._fontsize})
         _draw(data, image_folder, image_name, title, vmin, vmax);
-        //  plt.cla()                   clear()
-        cla();
-        //  plt.close()
     }
 
 protected:
@@ -133,7 +128,10 @@ public:
 
     virtual void _draw(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
         XYChart* image = _draw_fun->__call__(data, vmin, vmax);
-
+        if (image == nullptr) {
+            LOG_E("There is no image painted! {0}", __FUNCTION__);
+            return;
+        }
         image_name = image_name + "." + _image_format;
         auto ab_path = (fs::absolute(image_folder) / fs::path(image_name)).string();
         auto path = replace(ab_path, "\\", "/");
@@ -224,26 +222,16 @@ public:
     virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
         auto extent = _extent_generator->__call__(frame);
 
-        std::vector<double> x = linspace(0, frame[0].size(), frame[0].size());
-        std::vector<double> y = linspace(0, frame[0][0].size(), frame[0][0].size());
-
-        tri_matrix_d frame_d;
-        for (int i = 0; i < min(int(frame.size()), 3); i++) {
-            std::vector<std::vector<double>> vec_2d;
-            for (auto& j : frame[i]) {
-                std::vector<double> vec_1d;
-                for (auto& k : j) {
-                    vec_1d.push_back(static_cast<double>(k));
-                }
-                vec_2d.push_back(vec_1d);
+        //将矩阵顺时针旋转90度并改为double类型
+        tri_matrix_d frame_d(1, std::vector<std::vector<double>>(frame[0][0].size(), std::vector<double>(frame[0].size(), 0)));
+        for (int j = 0; j < frame[0][0].size(); j++) {
+            for (int i = 0; i < frame[0].size(); i++) {
+                frame_d[0][j][frame[0].size() - 1 - i] = static_cast<double>(frame[0][i][j]);
             }
-            frame_d.push_back(vec_2d);
         }
 
-
-        //todo
-        //, _image_alpha, _aspect, extent, vmin, vmax);
-
+        std::vector<double> x = linspace(0, frame_d[0].size(), frame_d[0].size());
+        std::vector<double> y = linspace(0, frame_d[0][0].size(), frame_d[0][0].size());
 
         float value_field = vmax - vmin;
         std::vector<double> colormap;
@@ -257,8 +245,11 @@ public:
             colormap.push_back(vmax);
             colormap.push_back(static_cast<double>((_cmap->colors.end() - 1)->int_color));
         }
+        else {
+            return nullptr;
+        }
 
-        XYChart* image = Rendering::paint_heat_map(x, y, frame_d, colormap);
+        XYChart* image = Rendering::paint_heat_map(x, y, frame_d, colormap, _image_alpha, _aspect);
         //image(ax, frame_d[0], true);
         if (_image_alpha != 0) {
             return image;
@@ -312,22 +303,17 @@ public:
         if (_image_alpha != 0) {
             auto extent = _extent_generator->__call__(frame);
             auto levels = _levels_generator.__call__(vmin, vmax);
-            //todo
-            //extent, _image_alpha);
-            std::vector<double> x = linspace(0, frame[0].size(), frame[0].size());
-            std::vector<double> y = linspace(0, frame[0][0].size(), frame[0][0].size());
-            tri_matrix_d frame_d;
-            for (int i = 0; i < min(int(frame.size()), 3); i++) {
-                std::vector<std::vector<double>> vec_2d;
-                for (auto& j : frame[i]) {
-                    std::vector<double> vec_1d;
-                    for (auto& k : j) {
-                        vec_1d.push_back(static_cast<double>(k));
-                    }
-                    vec_2d.push_back(vec_1d);
+
+            //将矩阵顺时针旋转90度并改为double类型
+            tri_matrix_d frame_d(1, std::vector<std::vector<double>>(frame[0][0].size(), std::vector<double>(frame[0].size(), 0)));
+            for (int j = 0; j < frame[0][0].size(); j++) {
+                for (int i = 0; i < frame[0].size(); i++) {
+                    frame_d[0][j][frame[0].size() - 1 - i] = static_cast<double>(frame[0][i][j]);
                 }
-                frame_d.push_back(vec_2d);
             }
+
+            std::vector<double> x = linspace(0, frame_d[0].size(), frame_d[0].size());
+            std::vector<double> y = linspace(0, frame_d[0][0].size(), frame_d[0][0].size());
 
             float value_field = vmax - vmin;
             std::vector<double> colormap;
@@ -342,7 +328,7 @@ public:
                 colormap.push_back(static_cast<double>((_cmap->colors.end() - 1)->int_color));
             }
 
-            XYChart* image = Rendering::paint_contour(x, y, frame_d, colormap);
+            XYChart* image = Rendering::paint_contour(x, y, frame_d, colormap, _image_alpha, levels);
             return image;
         }
         else {
@@ -366,30 +352,29 @@ public:
         _level_num = level_num;
     }
     virtual XYChart* __call__(tri_matrix frame, float vmin, float vmax) override {
-        auto extent = _extent_generator->__call__(frame);
-        auto levels = _levels_generator.__call__(vmin, vmax);
-        //todo
-        //gcf()->size(frame[0].size(), frame[0][0].size());
-        vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
-        vector_1d y = linspace(0, frame[0].size(), frame[0].size());
-        tri_matrix_d frame_d;
-        for (int i = 0; i < min(int(frame.size()), 3); i++) {
-            std::vector<std::vector<double>> vec_2d;
-            for (auto& j : frame[i]) {
-                std::vector<double> vec_1d;
-                for (auto& k : j) {
-                    vec_1d.push_back(static_cast<double>(k));
-                }
-                vec_2d.push_back(vec_1d);
-            }
-            frame_d.push_back(vec_2d);
-        }
-        //auto [X, Y] = meshgrid(x, y);
-        //contour(ax, X, Y, frame[0], levels)->color("black");
-        // extent, _image_alpha);
-        if (_image_alpha != 0) {
-            return nullptr;
-        }
+        //auto extent = _extent_generator->__call__(frame);
+        //auto levels = _levels_generator.__call__(vmin, vmax);
+
+        //vector_1d x = linspace(0, frame[0][0].size(), frame[0][0].size());
+        //vector_1d y = linspace(0, frame[0].size(), frame[0].size());
+        //tri_matrix_d frame_d;
+        //for (int i = 0; i < min(int(frame.size()), 3); i++) {
+        //    std::vector<std::vector<double>> vec_2d;
+        //    for (auto& j : frame[i]) {
+        //        std::vector<double> vec_1d;
+        //        for (auto& k : j) {
+        //            vec_1d.push_back(static_cast<double>(k));
+        //        }
+        //        vec_2d.push_back(vec_1d);
+        //    }
+        //    frame_d.push_back(vec_2d);
+        //}
+        ////auto [X, Y] = meshgrid(x, y);
+        ////contour(ax, X, Y, frame[0], levels)->color("black");
+        //// extent, _image_alpha);
+        //if (_image_alpha != 0) {
+        //    return nullptr;
+        //}
         return nullptr;
     }
 private:
@@ -417,8 +402,14 @@ public:
         auto heat_image = _heat_image_adder->__call__(frame, vmin, vmax);
         auto contourf_image = _contourf_image_adder->__call__(frame, vmin, vmax);
         auto contour_image = _contour_image_adder->__call__(frame, vmin, vmax);
-        //todo
-        auto image = heat_image;
+
+        XYChart* image = nullptr;
+        if (heat_image != nullptr) {
+            image = heat_image;
+        }
+        else if (contourf_image != nullptr) {
+            image = contourf_image;
+        }
         //auto image = heat_image or contourf_image;
         return image;
     }
@@ -477,11 +468,14 @@ public:
         auto contour_frame = frame;
         auto heat_image = _heat_image_adder->__call__(heat_frame, vmin, vmax);
         auto contourf_image = _contourf_image_adder->__call__(contour_frame, vmin, vmax);
-        //todo
-        //_contour_image_adder->__call__(contour_frame, ax, min(contour_frame), max(contour_frame));
-        //todo
-        //image = heat_image or contourf_image
-        return heat_image;
+        XYChart* image = nullptr;
+        if (heat_image != nullptr) {
+            image = heat_image;
+        }
+        else if (contourf_image != nullptr) {
+            image = contourf_image;
+        }
+        return image;
     }
 };
 

@@ -212,22 +212,25 @@ public:
 
     tri_matrix __call__(tri_matrix& data) {
         //auto& data_shape = data.shape();
-        auto x_coords = nc::linspace(_x0, _x1 - 1, _xy_dist);
-        auto y_coords = nc::linspace(_y0, _y1 - 1, _xy_dist);
+        auto x_coords = linspace(_x0, _x1 - 1, _xy_dist);
+        auto y_coords = linspace(_y0, _y1 - 1, _xy_dist);
         //todo
         // interp_func = RegularGridInterpolator(
         //     (nc::arange(data_shape.cols), nc::arange(data_shape.rows), np.arange(data_shape[2])), 
         //    data);
-        auto coordss = tri_matrix_int(_z1 - _z0, std::vector<std::vector<int>>(_xy_dist, std::vector<int>(3, 0)));
+        auto coordss = tri_matrix(3, std::vector<std::vector<float>>(_z1 - _z0, std::vector<float>(_xy_dist, 0)));
+        tri_matrix res = tri_matrix(1, std::vector<std::vector<float>>(_z1 - _z0, std::vector<float>(_xy_dist, 0)));
         for (int i = 0; i < _z1 - _z0; i++) {
             for (int j = 0; j < _xy_dist; j++) {
-                coordss[i][j][0] = _z0 + i;
-                coordss[i][j][1] = y_coords[j];
-                coordss[i][j][2] = x_coords[j];
+                coordss[0][i][j] = static_cast<float>(_z0 + i);
+                coordss[1][i][j] = static_cast<float>(y_coords[j]);
+                coordss[2][i][j] = static_cast<float>(x_coords[j]);
+                res[0][i][j] = data[coordss[0][i][j]][coordss[1][i][j]][coordss[2][i][j]];
             }
         }
+
         //data = interp_func(coordss);
-        return data;
+        return res;
     }
 
     DistCalcor _dist_calcor;
@@ -394,8 +397,8 @@ public:
 
     virtual void run(std::vector<int>& time_indexs) {
         for (auto& time_index : time_indexs) {
+            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
             NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
             data.grid_data.begin()->second = _slash_interpolator.__call__(data.grid_data.begin()->second);
             _zero_value_transformer.__call__(data.grid_data.begin()->second);
             std::string time_index_s = std::to_string(time_index);
@@ -403,6 +406,7 @@ public:
                 time_index_s = "0" + time_index_s;
             }
             _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
         }
     }
 
@@ -428,9 +432,9 @@ public:
 
     virtual void run(std::vector<int>& time_indexs) {
         for (auto& time_index : time_indexs) {
+            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
             NcVar_t u_data = _u_ncfile_manager.__getitem__(time_index);
             NcVar_t temp_data = _temp_ncfile_manager.__getitem__(time_index);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
             temp_data.grid_data.begin()->second = _slash_interpolator.__call__(temp_data.grid_data.begin()->second);
             u_data.grid_data.begin()->second = _slash_interpolator.__call__(u_data.grid_data.begin()->second);
             _zero_value_transformer.__call__(temp_data.grid_data.begin()->second);
@@ -439,6 +443,7 @@ public:
                 time_index_s = "0" + time_index_s;
             }
             _image_recorder.__call__(u_data.grid_data, temp_data.grid_data, "image_" + time_index_s);
+            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
         }
     }
 
@@ -459,14 +464,15 @@ public:
 
     virtual void run(std::vector<int>& time_indexs) {
         for (auto& time_index : time_indexs) {
+            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
             NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
             data.grid_data.begin()->second = _slash_interpolator.__call__(data.grid_data.begin()->second);
             std::string time_index_s = std::to_string(time_index);
             while (time_index_s.size() < 2) {
                 time_index_s = "0" + time_index_s;
             }
             _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
         }
     }
 
