@@ -440,20 +440,32 @@ public:
     }
 
     virtual void run(std::vector<int>& time_indexs) {
-        for (auto& time_index : time_indexs) {
-            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
-            NcVar_t u_data = _u_ncfile_manager.__getitem__(time_index);
-            NcVar_t temp_data = _temp_ncfile_manager.__getitem__(time_index);
-            temp_data.grid_data.begin()->second = _slash_interpolator.__call__(temp_data.grid_data.begin()->second);
-            u_data.grid_data.begin()->second = _slash_interpolator.__call__(u_data.grid_data.begin()->second);
-            _zero_value_transformer.__call__(temp_data.grid_data.begin()->second);
-            std::string time_index_s = std::to_string(time_index);
-            while (time_index_s.size() < 2) {
-                time_index_s = "0" + time_index_s;
-            }
-            _image_recorder.__call__(u_data.grid_data, temp_data.grid_data, "image_" + time_index_s);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+        std::mutex mutex;
+        for (int time_index : time_indexs) {
+            SingleThreadPool::GetInstance()->push([time_indexs, &mutex](int time_index,
+                NcfileManager t_ncfile_manager,
+                NcfileManager u_ncfile_manager,
+                SlashInterpolator slash_interpolator,
+                ZeroValueTransformer zero_value_transformer,
+                ImageRecorder image_recorder) {
+                    auto t = TimeRecorder();
+                    LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
+                    std::unique_lock<std::mutex> lock(mutex);
+                    NcVar_t u_data = u_ncfile_manager.__getitem__(time_index);
+                    NcVar_t temp_data = t_ncfile_manager.__getitem__(time_index);
+                    temp_data.grid_data.begin()->second = slash_interpolator.__call__(temp_data.grid_data.begin()->second);
+                    u_data.grid_data.begin()->second = slash_interpolator.__call__(u_data.grid_data.begin()->second);
+                    zero_value_transformer.__call__(temp_data.grid_data.begin()->second);
+                    std::string time_index_s = std::to_string(time_index);
+                    while (time_index_s.size() < 2) {
+                        time_index_s = "0" + time_index_s;
+                    }
+                    image_recorder.__call__(u_data.grid_data, temp_data.grid_data, "image_" + time_index_s);
+                    LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+                    t.finish();
+                }, time_index, _temp_ncfile_manager, _u_ncfile_manager, _slash_interpolator, _zero_value_transformer, _image_recorder);
         }
+        SingleThreadPool::GetInstance()->wait_until_done();
     }
 
 private:
@@ -472,17 +484,27 @@ public:
     }
 
     virtual void run(std::vector<int>& time_indexs) {
-        for (auto& time_index : time_indexs) {
-            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
-            NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            data.grid_data.begin()->second = _slash_interpolator.__call__(data.grid_data.begin()->second);
-            std::string time_index_s = std::to_string(time_index);
-            while (time_index_s.size() < 2) {
-                time_index_s = "0" + time_index_s;
-            }
-            _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+        std::mutex mutex;
+        for (int time_index : time_indexs) {
+            SingleThreadPool::GetInstance()->push([time_indexs, &mutex](int time_index,
+                NcfileManager ncfile_manager,
+                SlashInterpolator slash_interpolator,
+                ImageRecorder image_recorder) {
+                    auto t = TimeRecorder();
+                    std::unique_lock<std::mutex> lock(mutex);
+                    LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
+                    NcVar_t data = ncfile_manager.__getitem__(time_index);
+                    data.grid_data.begin()->second = slash_interpolator.__call__(data.grid_data.begin()->second);
+                    std::string time_index_s = std::to_string(time_index);
+                    while (time_index_s.size() < 2) {
+                        time_index_s = "0" + time_index_s;
+                    }
+                    image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+                    LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+                    t.finish();
+                }, time_index, _ncfile_manager, _slash_interpolator, _image_recorder);
         }
+        SingleThreadPool::GetInstance()->wait_until_done();
     }
 
 private:
@@ -499,18 +521,29 @@ public:
     }
 
     virtual void run(std::vector<int>& time_indexs) {
-        for (auto& time_index : time_indexs) {
-            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
-            NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            data.grid_data.begin()->second = _cropper.__call__(data.grid_data.begin()->second, 0);
-            data.grid_data.begin()->second = _gradientor.__call__(data.grid_data.begin()->second);
-            std::string time_index_s = std::to_string(time_index);
-            while (time_index_s.size() < 2) {
-                time_index_s = "0" + time_index_s;
-            }
-            _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+        std::mutex mutex;
+        for (int time_index : time_indexs) {
+            SingleThreadPool::GetInstance()->push([time_indexs, &mutex](int time_index,
+                NcfileManager ncfile_manager,
+                Cropper cropper,
+                Gradientor gradientor,
+                ImageRecorder image_recorder) {
+                    auto t = TimeRecorder();
+                    LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
+                    std::unique_lock<std::mutex> lock(mutex);
+                    NcVar_t data = ncfile_manager.__getitem__(time_index);
+                    data.grid_data.begin()->second = cropper.__call__(data.grid_data.begin()->second, 0);
+                    data.grid_data.begin()->second = gradientor.__call__(data.grid_data.begin()->second);
+                    std::string time_index_s = std::to_string(time_index);
+                    while (time_index_s.size() < 2) {
+                        time_index_s = "0" + time_index_s;
+                    }
+                    image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+                    LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+                    t.finish();
+                }, time_index, _ncfile_manager, _cropper, _gradientor, _image_recorder);
         }
+        SingleThreadPool::GetInstance()->wait_until_done();
     }
 
 private:
