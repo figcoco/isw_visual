@@ -118,7 +118,7 @@
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)3rd_party\json\jsoncpp\dist;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>--data_folder=../../../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -143,7 +143,7 @@
       </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)3rd_party\json\jsoncpp\dist;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>--data_folder=../../../isw_visual_lcl/data/ISWFM-NSCS-6day --fea_name=temp --nop=5 --image_folder=./output/image_sequence_temp --t0=0 --t1=23 --x0=300 --y0=60 --x1=1500 --y1=750 --zx_aspect=20 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -188,6 +188,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\initer.cpp" />
     <ClCompile Include="source\ncfile_manager.cpp" />
+    <ClCompile Include="source\thread_pool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\chartdir_plot.hpp" />
@@ -196,7 +197,8 @@
     <ClInclude Include="include\ncfile_manager.hpp" />
     <ClInclude Include="include\ocean_data.hpp" />
     <ClInclude Include="include\ocean_data_visual.hpp" />
-    <ClInclude Include="include\ThreadPool.hpp" />
+    <ClInclude Include="include\thread_pool.hpp" />
+    <ClInclude Include="include\util.hpp" />
     <ClInclude Include="include\visual_image_sequence.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

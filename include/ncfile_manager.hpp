@@ -9,17 +9,18 @@
 #include <stdlib.h>
 #include <sstream>
 #include <map>
-//#include <opencv2/opencv.hpp>
 #include "NumCpp.hpp"
 #include <boost/filesystem.hpp>
 #include <regex>
+#include <chrono>   
 
 namespace fs = std::filesystem;
 using namespace netCDF;
 using namespace netCDF::exceptions;
-
+using namespace std::chrono;
 
 bool CreateFolder(const std::string& dir_path);
+std::string replace(std::string str, const std::string& from, const std::string& to);
 
 class AdLog {
 public:
@@ -48,6 +49,24 @@ typedef std::vector<std::vector<std::vector<float>>> tri_matrix;
 typedef std::vector<std::vector<std::vector<double>>> tri_matrix_d;
 typedef std::vector<std::vector<std::vector<int>>> tri_matrix_int;
 typedef std::map<std::string, std::vector<std::vector<std::vector<float>>>> tri_matrix_map;
+
+class TimeRecorder {
+public:
+	TimeRecorder() {
+		_start = system_clock::now();
+	}
+
+	void finish() {
+		_end = system_clock::now();
+		auto duration = duration_cast<microseconds>(_end - _start);
+		double cost_time = double(duration.count()) * microseconds::period::num / microseconds::period::den;
+		LOG_I("process cost {0} s", cost_time);
+	}
+
+private:
+	system_clock::time_point _start;
+	system_clock::time_point _end;
+};
 
 class TriMatrix {
 public:
@@ -134,6 +153,7 @@ public:
 			Matrix.__init__(Nr.getSize(), Ny.getSize(), Nx.getSize());
 			data.getVar(Matrix.data());
 		}
+		dataFile.close();
 		res[fea_name] = Matrix.to_tri_matrix();
 		return res;
 	}
@@ -150,7 +170,7 @@ public:
 		std::vector<std::string> file_paths;
 		std::vector<std::string> res;
 
-		fs::path all_path = fs::current_path() / fs::path(file_folder);
+		fs::path all_path = fs::absolute(fs::path(file_folder)) ;
 		std::regex reg_exp(".*" + file_name_patern);
 		try {
 			getAllFiles(all_path.string(), file_paths);
@@ -184,6 +204,9 @@ public:
 	NcfileManager(std::string file_folder, std::string file_name_patern, std::string fea_name, int t0, int t1) {
 		std::vector<std::string> file_paths = _file_searcher.__call__(file_folder, file_name_patern);
 		sort(file_paths.begin(), file_paths.end());
+		for (auto& i : file_paths) {
+			i = replace(i, "\\", "/");
+		}
 		if (file_paths.size() == 0) {
 			LOG_E("No file found! The path is {0}", file_folder);
 			return;
@@ -227,6 +250,14 @@ public:
 		tri_matrix_map grid_data = _file_reader.__call__(_file_paths[index], _fea_name);
 		int time = _times[index];
 		return { grid_data, time };
+	}
+
+	std::vector<std::string> get_file_paths() {
+		return _file_paths;
+	}
+
+	std::string get_fea_name() {
+		return _fea_name;
 	}
 
 	void Stringsplit(std::string str, const char split, std::vector<std::string>& res);

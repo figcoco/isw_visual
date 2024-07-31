@@ -117,14 +117,6 @@ public:
         auto f = figure(true);
         figure(f);
     }
-    std::string replace(std::string str, const std::string& from, const std::string& to) {
-        size_t start_pos = 0;
-        while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
-            str.replace(start_pos, from.length(), to);
-            start_pos += to.length();
-        }
-        return str;
-    }
 
     virtual void _draw(tri_matrix& data, std::string image_folder, std::string image_name, std::string title = "", float vmin = 0.0f, float vmax = 0.0f) {
         XYChart* image = _draw_fun->__call__(data, vmin, vmax);

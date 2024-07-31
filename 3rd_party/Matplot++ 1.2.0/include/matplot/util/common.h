@@ -543,7 +543,7 @@ namespace matplot {
         double operator()(std::size_t i, std::size_t j) {
             return _vec.at(i).at(j);
         }
-        friend class iterator;
+
 
         class iterator {
             vector_2d_view *const _vec;
@@ -583,6 +583,8 @@ namespace matplot {
             // iterator traits
             using value_type = double;
         };
+        friend class matplot::vector_2d_view::iterator;
+
         iterator begin() { return iterator{this}; }
         iterator end() { return iterator{nullptr}; }
     };

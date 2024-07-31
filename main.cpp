@@ -1,10 +1,11 @@
 #include "initer.hpp"
 
+
 int main(int argc, char* argv[]) {
     auto time_recorder = TimeRecorder();
     Initer initer;
     initer.init();
-    //multi_process_manager = MultiProcessingManager();
+
     auto param_reciver = ParamReciver();
     auto param = param_reciver.__call__(argc, argv);
     {
@@ -16,15 +17,14 @@ int main(int argc, char* argv[]) {
         param.y1 = 750;
         param.x0 = 300;
         param.x1 = 1500;
-        param.nop = 5;
+        param.nop = 24;
         param.zx_aspect = 2.0;
         param.yx_aspect = 1.76;
         param.image_type;
         param.data_folder = "../data/ISWFM-NSCS-6day";
         param.image_folder = "./output/image_sequence_temp";
     }
-    SingleThreadPool = new ThreadPool(param.nop);
-
+    SingleThreadPool::init(param.nop);
     auto visualer_factory = VisualerFactory();
     auto visualer = visualer_factory.__call__(param);
     if (visualer == nullptr) {
@@ -33,8 +33,7 @@ int main(int argc, char* argv[]) {
     }
     auto runer = VisualRuner(visualer);
     runer.run();
-
-    delete SingleThreadPool;
+    SingleThreadPool::close();
     time_recorder.finish();
     return 0;
 }

@@ -1,14 +1,12 @@
 #pragma once
 
-#include <chrono>   
 #include <iostream>
 #include "ncfile_manager.hpp"
 #include "ocean_data.hpp"
 #include <boost/program_options.hpp>
-#include "ThreadPool.hpp"
+#include "thread_pool.hpp"
 #include "ocean_data_visual.hpp"
 
-using namespace std::chrono;
 namespace bpo = boost::program_options;
 
 struct Param {
@@ -396,18 +394,29 @@ public:
     }
 
     virtual void run(std::vector<int>& time_indexs) {
-        for (auto& time_index : time_indexs) {
-            LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
-            NcVar_t data = _ncfile_manager.__getitem__(time_index);
-            data.grid_data.begin()->second = _slash_interpolator.__call__(data.grid_data.begin()->second);
-            _zero_value_transformer.__call__(data.grid_data.begin()->second);
-            std::string time_index_s = std::to_string(time_index);
-            while (time_index_s.size() < 2) {
-                time_index_s = "0" + time_index_s;
-            }
-            _image_recorder.__call__(data.grid_data, "image_" + time_index_s);
-            LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+        std::mutex mutex;
+        for (int time_index : time_indexs) {
+            SingleThreadPool::GetInstance()->push([time_indexs, &mutex](int time_index,
+                NcfileManager ncfile_manager,
+                SlashInterpolator slash_interpolator,
+                ZeroValueTransformer zero_value_transformer,
+                ImageRecorder image_recorder) {           
+                    auto t = TimeRecorder();
+                    LOG_I("time_index : {0} / {1} start.", time_index, time_indexs.size());
+                    std::unique_lock<std::mutex> lock(mutex);
+                    NcVar_t data = ncfile_manager.__getitem__(time_index);
+                    data.grid_data.begin()->second = slash_interpolator.__call__(data.grid_data.begin()->second);
+                    zero_value_transformer.__call__(data.grid_data.begin()->second);
+                    std::string time_index_s = std::to_string(time_index);
+                    while (time_index_s.size() < 2) {
+                        time_index_s = "0" + time_index_s;
+                    }
+                    image_recorder.__call__(data.grid_data, "image_" + time_index_s);
+                    LOG_I("time_index : {0} / {1} complete.", time_index, time_indexs.size());
+                    t.finish();
+                }, time_index, _ncfile_manager, _slash_interpolator, _zero_value_transformer, _image_recorder);
         }
+        SingleThreadPool::GetInstance()->wait_until_done();
     }
 
 private:
@@ -509,24 +518,6 @@ private:
     Gradientor _gradientor;
 };
 
-class TimeRecorder {
-public:
-    TimeRecorder() {
-        _start = system_clock::now();
-    }
-
-    void finish() {
-        _end = system_clock::now();
-        auto duration = duration_cast<microseconds>(_end - _start);
-        double cost_time = double(duration.count())* microseconds::period::num / microseconds::period::den;
-        LOG_I("process cost {0} s", cost_time);
-    }
-
-private:
-    system_clock::time_point _start;
-    system_clock::time_point _end;
-};
-
 class VisualRuner {
 public:
     VisualRuner() = default;
@@ -538,6 +529,7 @@ public:
     void run() {
         //self._multi_process_manager.run(self._visualer.run, self._time_indexs);
         _visualer->run(_time_indexs);
+
     }
 
 private:

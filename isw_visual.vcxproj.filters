@@ -126,6 +126,9 @@
     <ClCompile Include="3rd_party\json\jsoncpp\dist\jsoncpp.cpp">
       <Filter>3rd_party\json</Filter>
     </ClCompile>
+    <ClCompile Include="source\thread_pool.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\coord_generator.hpp">
@@ -146,10 +149,13 @@
     <ClInclude Include="include\visual_image_sequence.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ThreadPool.hpp">
+    <ClInclude Include="include\chartdir_plot.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\chartdir_plot.hpp">
+    <ClInclude Include="include\thread_pool.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

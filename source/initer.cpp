@@ -166,5 +166,27 @@ void Initer::init() {
 
     ////free up resources
     //delete c;
+    
 
+    //////-----------------------multi thread------------------------------------/////
+    //SingleThreadPool::init(5);
+    //auto ncfile_manager = NcfileManager("../data/ISWFM-NSCS-6day", "stateT.*.glob.nc", "Temp", 0, 23 + 1);
+    //auto indexs = ncfile_manager.get_file_paths();
+    //auto fea_name = ncfile_manager.get_fea_name();
+
+    //int sum = 0;
+    //for (auto index : indexs) {
+    //    auto func = [&ncfile_manager](std::string index,std::string fea_name) {
+    //        NcFileReader reader;
+    //        auto data = reader.__call__(index, fea_name);
+    //        LOG_I("index : {0}", index);
+    //    };
+    //    SingleThreadPool::GetInstance()->enqueue(func, index, fea_name);
+    //    if (sum == 1) {
+    //        break;
+    //    }
+    //    sum += 1;
+    //}
+
+    //SingleThreadPool::close();
 }
